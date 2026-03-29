@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoxLens — AI-Powered News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand" onclick="showSection('home')">
+      <div class="brand-logo">V<span>L</span></div>
+      <span class="brand-name">VoxLens</span>
+    </div>
+
+    <div class="nav-links" id="navLinks">
+      <a class="nav-link active" data-section="home"      onclick="showSection('home')">Home</a>
+      <a class="nav-link"        data-section="local"     onclick="showSection('local')">Local</a>
+      <a class="nav-link"        data-section="brief"     onclick="showSection('brief')">Smart Brief</a>
+      <a class="nav-link"        data-section="timeline"  onclick="showSection('timeline')">Timeline</a>
+      <a class="nav-link"        data-section="search"    onclick="showSection('search')">Search</a>
+      <a class="nav-link"        data-section="community" onclick="showSection('community')">Community</a>
+      <a class="nav-link"        data-section="chatbot"   onclick="showSection('chatbot')">VoxBot</a>
+    </div>
+
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+        <span class="theme-icon-light">☀️</span>
+        <span class="theme-icon-dark">🌙</span>
+      </button>
+      <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <header class="hero" id="heroSection">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span> AI-Powered · Live News · Real Insights
+        </div>
+        <h1 class="hero-title">News that makes<br><em>sense.</em></h1>
+        <p class="hero-subtitle">Smart summaries, impact analysis, and AI conversations — built for everyone.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" onclick="showSection('home')">Explore Headlines</button>
+          <button class="btn btn-ghost" onclick="showSection('chatbot')">Chat with VoxBot</button>
+        </div>
+      </div>
+      <div class="hero-pills">
+        <div class="pill pill-1"><span>📋</span> Smart Brief</div>
+        <div class="pill pill-2"><span>💡</span> So What?</div>
+        <div class="pill pill-3"><span>⚖️</span> Pros &amp; Cons</div>
+        <div class="pill pill-4"><span>🧠</span> Quiz</div>
+        <div class="pill pill-5"><span>🕐</span> Timeline</div>
+        <div class="pill pill-6"><span>🤖</span> VoxBot</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main-wrap">
+    <div class="main-container">
+
+      <!-- HOME -->
+      <section id="section-home" class="section active">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Today's Headlines</h2>
+            <p class="section-sub">Real-time news updated every few minutes</p>
+          </div>
+          <div class="category-filters">
+            <button class="filter-btn active" onclick="loadHeadlines('general',this)">All</button>
+            <button class="filter-btn" onclick="loadHeadlines('technology',this)">Tech</button>
+            <button class="filter-btn" onclick="loadHeadlines('business',this)">Business</button>
+            <button class="filter-btn" onclick="loadHeadlines('health',this)">Health</button>
+            <button class="filter-btn" onclick="loadHeadlines('science',this)">Science</button>
+            <button class="filter-btn" onclick="loadHeadlines('sports',this)">Sports</button>
+          </div>
+        </div>
+        <div class="articles-grid" id="homeArticles">
+          <div class="skeleton-wrap" id="homeSkeleton">
+            <div class="skeleton-card"></div><div class="skeleton-card"></div>
+            <div class="skeleton-card"></div><div class="skeleton-card"></div>
+            <div class="skeleton-card"></div><div class="skeleton-card"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LOCAL NEWS -->
+      <section id="section-local" class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">📍 Local News</h2>
+            <p class="section-sub" id="localSubtitle">Detecting your location…</p>
+          </div>
+        </div>
+        <div class="location-bar" id="locationBar">
+          <div class="location-detecting">
+            <div class="spinner"></div>
+            <span>Getting your location for personalised news…</span>
+          </div>
+        </div>
+        <div class="articles-grid" id="localArticles"></div>
+      </section>
+
+      <!-- SMART BRIEF -->
+      <section id="section-brief" class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">📋 Smart Brief</h2>
+            <p class="section-sub">5-point AI summaries of any article</p>
+          </div>
+        </div>
+        <div class="info-banner">Select any article below to generate an instant AI-powered 5-bullet summary</div>
+        <div class="brief-list" id="briefArticles"><div class="loading-msg">Loading articles…</div></div>
+      </section>
+
+      <!-- TIMELINE -->
+      <section id="section-timeline" class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">🕐 Story Timeline</h2>
+            <p class="section-sub">See how news stories evolved over time</p>
+          </div>
+        </div>
+        <div class="brief-list" id="timelineArticles"><div class="loading-msg">Loading articles…</div></div>
+        <div class="timeline-view" id="timelineView" style="display:none;"></div>
+      </section>
+
+      <!-- SEARCH -->
+      <section id="section-search" class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">🔍 Search</h2>
+            <p class="section-sub">Search by keywords or paste an article URL</p>
+          </div>
+        </div>
+        <div class="search-box-wrap">
+          <div class="search-tabs">
+            <button class="stab active" id="tabKeyword" onclick="switchSearchTab('keyword')">🔍 Keywords</button>
+            <button class="stab" id="tabUrl" onclick="switchSearchTab('url')">🔗 Article URL</button>
+          </div>
+          <div id="keywordSearch">
+            <div class="sinput-wrap">
+              <input type="text" id="searchInput" class="sinput" placeholder="Search topics, events, people…" onkeydown="if(event.key==='Enter')performSearch()"/>
+              <button class="btn btn-primary" onclick="performSearch()">Search</button>
+            </div>
+          </div>
+          <div id="urlSearch" style="display:none;">
+            <div class="sinput-wrap">
+              <input type="url" id="urlInput" class="sinput" placeholder="https://example.com/article" onkeydown="if(event.key==='Enter')fetchFromUrl()"/>
+              <button class="btn btn-primary" onclick="fetchFromUrl()">Analyse</button>
+            </div>
+            <p class="url-hint">Paste any article URL — VoxLens will fetch and analyse it with AI</p>
+          </div>
+        </div>
+        <div class="articles-grid" id="searchResults"></div>
+      </section>
+
+      <!-- COMMUNITY -->
+      <section id="section-community" class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">💬 Community</h2>
+            <p class="section-sub">Discuss news topics — respectfully and factually</p>
+          </div>
+        </div>
+        <div class="community-layout">
+          <div class="guidelines-card">
+            <h3 class="g-title">📜 Guidelines</h3>
+            <ul class="g-list" id="guidelinesList">
+              <li>Be respectful and constructive</li>
+              <li>No hate speech or personal attacks</li>
+              <li>Base arguments on facts and sources</li>
+              <li>No spam or off-topic content</li>
+              <li>Protect others' privacy</li>
+            </ul>
+          </div>
+          <div class="discussion-main">
+            <label class="dlabel">Select an article to discuss:</label>
+            <select id="discussionArticleSelect" class="dselect" onchange="loadDiscussion()">
+              <option value="">— Choose an article —</option>
+            </select>
+            <div id="discussionPanel" style="display:none;">
+              <div class="comment-form">
+                <input type="text" id="commentUsername" class="cinput" placeholder="Your name (optional)" maxlength="50"/>
+                <textarea id="commentText" class="ctextarea" placeholder="Share your thoughts… (be respectful)" maxlength="2000" oninput="updateCharCount()"></textarea>
+                <div class="cactions">
+                  <span class="char-count" id="charCount">0 / 2000</span>
+                  <button class="btn btn-primary" onclick="submitComment()">Post Comment</button>
+                </div>
+              </div>
+              <div class="comments-list" id="commentsList">
+                <div class="no-comments">No comments yet — be first!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHATBOT -->
+      <section id="section-chatbot" class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">🤖 VoxBot</h2>
+            <p class="section-sub">Ask anything — VoxBot reads today's live news to answer you</p>
+          </div>
+        </div>
+        <div class="chatbot-wrap">
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot-msg">
+              <div class="msg-avatar">🤖</div>
+              <div class="msg-bubble">
+                <p>Hi! I'm <strong>VoxBot</strong>. I read today's live headlines to answer your questions.</p>
+                <p class="msg-hint">Try: <em>"What's the latest tech news?"</em> or <em>"Explain the economy right now."</em></p>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <div class="chat-suggestions" id="chatSuggestions">
+              <button class="sugg-chip" onclick="sendSuggestion(this)">What's happening in India today?</button>
+              <button class="sugg-chip" onclick="sendSuggestion(this)">Explain the latest tech news</button>
+              <button class="sugg-chip" onclick="sendSuggestion(this)">What are the top economic stories?</button>
+            </div>
+            <div class="chat-inputrow">
+              <textarea id="chatInput" class="chat-input" placeholder="Ask VoxBot about any news topic…" rows="1" onkeydown="handleChatKey(event)"></textarea>
+              <button class="chat-send" id="chatSendBtn" onclick="sendChatMessage()">➤</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ══ ARTICLE MODAL ══ -->
+  <div class="modal-overlay" id="articleModal" onclick="closeModal(event)">
+    <div class="modal-box" id="modalContent">
+      <button class="modal-close" onclick="closeArticleModal()">✕</button>
+      <div class="modal-header" id="modalHeader"></div>
+      <div class="modal-tabs" id="modalTabs">
+        <button class="mtab active" onclick="switchModalTab('article',this)">📰 Article</button>
+        <button class="mtab" onclick="switchModalTab('brief',this)">📋 Brief</button>
+        <button class="mtab" onclick="switchModalTab('sowhat',this)">💡 So What?</button>
+        <button class="mtab" onclick="switchModalTab('proscons',this)">⚖️ Pros &amp; Cons</button>
+        <button class="mtab" onclick="switchModalTab('quiz',this)">🧠 Quiz</button>
+        <button class="mtab" onclick="switchModalTab('timeline',this)">🕐 Timeline</button>
+      </div>
+      <div class="modal-body">
+        <!-- Article tab -->
+        <div id="tab-article" class="mpanel active">
+          <div class="listen-bar">
+            <button class="btn-listen" id="listenBtn" onclick="toggleListen()">🔊 Listen</button>
+            <div id="sentimentBadge" class="sent-badge"></div>
+          </div>
+          <div id="articleFullContent" class="article-text"></div>
+        </div>
+        <!-- Brief tab -->
+        <div id="tab-brief" class="mpanel">
+          <div class="panel-load" id="briefLoading"><div class="spinner"></div> Generating Smart Brief…</div>
+          <div id="briefContent" style="display:none;"></div>
+        </div>
+        <!-- So What tab -->
+        <div id="tab-sowhat" class="mpanel">
+          <div class="panel-load" id="sowhatLoading"><div class="spinner"></div> Analysing impact…</div>
+          <div id="sowhatContent" style="display:none;"></div>
+        </div>
+        <!-- Pros Cons tab -->
+        <div id="tab-proscons" class="mpanel">
+          <div class="panel-load" id="prosconsLoading"><div class="spinner"></div> Generating analysis…</div>
+          <div id="prosconsContent" style="display:none;"></div>
+        </div>
+        <!-- Quiz tab -->
+        <div id="tab-quiz" class="mpanel">
+          <div class="panel-load" id="quizLoading"><div class="spinner"></div> Creating quiz…</div>
+          <div id="quizContent" style="display:none;"></div>
+        </div>
+        <!-- Timeline tab -->
+        <div id="tab-timeline" class="mpanel">
+          <div class="panel-load" id="timelineLoading"><div class="spinner"></div> Building timeline…</div>
+          <div id="timelineContent" style="display:none;"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost btn-sm" onclick="openDiscussionFromModal()">💬 Discuss</button>
+        <a id="articleSourceLink" href="#" target="_blank" class="btn btn-outline btn-sm">Read Original ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
